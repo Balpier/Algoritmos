@@ -8,7 +8,7 @@ public class Ejercicio1 {
     }
 
     public static void main(String[] args) {
-        List<String> nombres = List.of("Ana", "Luis", "Carlos");
+        List<String> nombres = List.of("Ana", "Luis", "Carlos, Maria");
         System.out.println(buscarElemento(nombres, "Luis")); 
         System.out.println(buscarElemento(nombres, "Fernando")); 
     }
