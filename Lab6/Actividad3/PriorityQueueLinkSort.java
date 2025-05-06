@@ -4,7 +4,6 @@ import Actividad2.Node;
 import Actividades.ExceptionIsEmpty;
 
 class PriorityQueueLinkSort<E, N extends Comparable<N>> implements PriorityQueue<E, N> {
-
     class EntryNode {
         E data;
         N priority;
@@ -34,7 +33,7 @@ class PriorityQueueLinkSort<E, N extends Comparable<N>> implements PriorityQueue
         if (isEmpty()) {
             this.first = this.last = newNode;
         } else if (pr.compareTo(this.first.getData().priority) > 0) {
-           
+            // Insertar al inicio si tiene mayor prioridad
             newNode.setNext(this.first);
             this.first = newNode;
         } else {
