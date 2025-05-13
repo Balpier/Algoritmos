@@ -85,11 +85,38 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         return node;
     }
 
-    private Node<E> findMinNode(Node<E> node) {
+    private Node<E> findMinNode(Node<E> node) throws ItemNoFound {
+        if (node == null) {
+            throw new ItemNoFound("El subárbol está vacío. No se puede encontrar el mínimo.");
+        }
         while (node.left != null) {
             node = node.left;
         }
         return node;
+    }
+
+    private Node<E> findMaxNode(Node<E> node) throws ItemNoFound {
+        if (node == null) {
+            throw new ItemNoFound("El subárbol está vacío. No se puede encontrar el máximo.");
+        }
+        while (node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
+    public E findMin() throws ItemNoFound, ExceptionIsEmpty {
+        if (isEmpty()) {
+            throw new ExceptionIsEmpty("El BST está vacío.");
+        }
+        return findMinNode(root).data;
+    }
+
+    public E findMax() throws ItemNoFound, ExceptionIsEmpty {
+        if (isEmpty()) {
+            throw new ExceptionIsEmpty("El BST está vacío.");
+        }
+        return findMaxNode(root).data;
     }
 
     @Override
@@ -107,7 +134,6 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         }
     }
 
-    
     @Override
     public void preOrder() {
         System.out.print("Pre-Order: ");
@@ -122,7 +148,6 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
             preOrderRecursive(node.right);
         }
     }
-
 
     @Override
     public void postOrder() {
@@ -139,4 +164,3 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         }
     }
 }
-
