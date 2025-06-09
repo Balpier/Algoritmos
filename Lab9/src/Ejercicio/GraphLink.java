@@ -218,6 +218,83 @@ public class GraphLink {
 
         return path;
     }
+    
+    
+    
+    public void insertEdgeWeight(String v, String z, int w) {
+        Vertex origin = getVertex(v);
+        Vertex dest = getVertex(z);
+        if (origin == null || dest == null) return;
+        if (searchEdge(v, z)) return;
+
+        Edge e1 = new Edge(dest, w);
+        e1.next = origin.adjacency;
+        origin.adjacency = e1;
+
+        Edge e2 = new Edge(origin, w);
+        e2.next = dest.adjacency;
+        dest.adjacency = e2;
+    }
+    
+    public ArrayList<String> shortPath(String v, String z) {
+        Map<String, Integer> dist = new HashMap<>();
+        Map<String, String> prev = new HashMap<>();
+        Set<String> visited = new HashSet<>();
+        PriorityQueue<VertexDist> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.dist));
+
+        for (Vertex temp = start; temp != null; temp = temp.next) {
+            dist.put(temp.name, Integer.MAX_VALUE);
+            prev.put(temp.name, null);
+        }
+
+        dist.put(v, 0);
+        pq.offer(new VertexDist(v, 0));
+
+        while (!pq.isEmpty()) {
+            VertexDist current = pq.poll();
+            if (visited.contains(current.name)) continue;
+            visited.add(current.name);
+
+            Vertex vertex = getVertex(current.name);
+            Edge edge = vertex.adjacency;
+
+            while (edge != null) {
+                String neighbor = edge.destination.name;
+                int newDist = dist.get(current.name) + edge.weight;
+
+                if (newDist < dist.get(neighbor)) {
+                    dist.put(neighbor, newDist);
+                    prev.put(neighbor, current.name);
+                    pq.offer(new VertexDist(neighbor, newDist));
+                }
+
+                edge = edge.next;
+            }
+        }
+
+        ArrayList<String> path = new ArrayList<>();
+        if (!dist.containsKey(z) || dist.get(z) == Integer.MAX_VALUE) return path;
+
+        String current = z;
+        while (current != null) {
+            path.add(0, current);
+            current = prev.get(current);
+        }
+
+        return path;
+    }
+
+    private static class VertexDist {
+        String name;
+        int dist;
+
+        VertexDist(String name, int dist) {
+            this.name = name;
+            this.dist = dist;
+        }
+    }
+
+
 
 
 }
